@@ -56,4 +56,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+console.log('Open http://localhost:3000 in the browser to view the app.');
+
 module.exports = app;

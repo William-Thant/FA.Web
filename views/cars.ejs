@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Cars | DriveWay</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <%- include('partials/navbar', { navItems, search }) %>
+  <main class="page">
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Browse</p>
+        <h1>Available cars</h1>
+        <p class="lede">Filter by category or use the search bar to find a model fast.</p>
+      </div>
+      <div class="category-strip">
+        <% categories.forEach(function(cat){ %>
+          <a href="/cars?category=<%= cat %>" class="chip <%= category && category.toLowerCase() === cat.toLowerCase() ? 'chip-active' : '' %>"><%= cat %></a>
+        <% }) %>
+        <a href="/cars" class="chip">Clear</a>
+      </div>
+    </section>
+
+    <section class="car-grid">
+      <% if (cars.length === 0) { %>
+        <div class="empty">
+          <p>No cars available in this category right now.</p>
+        </div>
+      <% } %>
+      <% cars.forEach(function(car){ %>
+        <article class="card">
+          <div class="card-top">
+            <span class="pill"><%= car.category %></span>
+            <span class="status available">Available</span>
+          </div>
+          <h3><%= car.name %></h3>
+          <p class="muted"><%= car.type %> · <%= car.condition %></p>
+          <p class="price">$<%= car.pricePerDay %><span>/day</span></p>
+          <% if (currentUser) { %>
+            <form action="/cars/<%= car.id %>/rent" method="post">
+              <button class="btn primary" type="submit">Rent</button>
+            </form>
+          <% } else { %>
+            <a class="btn ghost" href="/auth/login">Sign in to rent</a>
+          <% } %>
+        </article>
+      <% }) %>
+    </section>
+  </main>
+</body>
+</html>

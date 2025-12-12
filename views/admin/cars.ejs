@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Admin | DriveWay</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <%- include('../partials/navbar', { navItems, search: '' }) %>
+  <main class="page">
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Fleet management</h1>
+        <p class="lede">Add cars, flip availability, and retire units. Only admins can see this view.</p>
+      </div>
+    </section>
+
+    <section class="admin-grid">
+      <div class="card">
+        <h3>Add a car</h3>
+        <form class="stack" action="/admin/cars" method="post">
+          <label>Name<input required name="name" placeholder="Model name"></label>
+          <label>Category
+            <select name="category">
+              <% categories.forEach(function(cat){ %>
+                <option value="<%= cat %>"><%= cat %></option>
+              <% }) %>
+            </select>
+          </label>
+          <label>Condition
+            <select name="condition">
+              <option>New</option>
+              <option>Used</option>
+            </select>
+          </label>
+          <label>Type<input name="type" placeholder="SUV, Sedan, Hatchback"></label>
+          <label>Price per day<input name="pricePerDay" type="number" min="0" step="1" placeholder="79"></label>
+          <button class="btn primary" type="submit">Add car</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>Current fleet</h3>
+        <div class="table">
+          <div class="table-head">
+            <span>Car</span>
+            <span>Status</span>
+            <span>Rate</span>
+            <span>Actions</span>
+          </div>
+          <% cars.forEach(function(car){ %>
+            <div class="table-row">
+              <span><strong><%= car.name %></strong><br><span class="muted"><%= car.category %> · <%= car.type %></span></span>
+              <span><span class="status <%= car.status %>"><%= car.status %></span><% if (car.rentedBy) { %><br><span class="muted">by <%= car.rentedBy %></span><% } %></span>
+              <span>$<%= car.pricePerDay %>/day</span>
+              <span class="row-actions">
+                <form action="/admin/cars/<%= car.id %>/toggle" method="post">
+                  <button class="btn ghost" type="submit">Toggle availability</button>
+                </form>
+                <form action="/admin/cars/<%= car.id %>/delete" method="post">
+                  <button class="btn danger" type="submit">Delete</button>
+                </form>
+              </span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

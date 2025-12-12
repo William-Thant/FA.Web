@@ -1,0 +1,23 @@
+<header class="nav-shell">
+  <div class="brand"><a href="/">DriveWay</a></div>
+  <nav class="nav-links">
+    <% navItems.forEach(function(item){ %>
+      <a href="<%= item.href %>"><%= item.label %></a>
+    <% }) %>
+  </nav>
+  <form class="search" action="/" method="get">
+    <input name="search" value="<%= search || '' %>" placeholder="Search cars or types" />
+    <button type="submit">Search</button>
+  </form>
+  <div class="user-box">
+    <% if (currentUser) { %>
+      <span class="user-name"><%= currentUser.name %></span>
+      <span class="pill role"><%= currentUser.role %></span>
+      <form action="/auth/logout" method="post">
+        <button class="btn ghost" type="submit">Logout</button>
+      </form>
+    <% } else { %>
+      <a class="btn primary" href="/auth/login">Login</a>
+    <% } %>
+  </div>
+</header>

@@ -15,11 +15,52 @@
         <h1>Find Your Perfect Vehicle</h1>
         <p class="lede">Explore our curated collection of premium vehicles with transparent pricing and seamless booking. Industry-leading customer service guaranteed.</p>
         <div class="hero-actions">
-          <a class="btn primary" href="#cars">Browse Vehicles</a>
           <% if (isAdmin) { %>
-            <a class="btn ghost" href="/admin/cars">Manage Inventory</a>
+            <a class="btn primary" href="/admin/cars">Manage Inventory</a>
           <% } %>
         </div>
+      </div>
+    </section>
+
+    <section class="featured" id="featured">
+      <div class="featured-head">
+        <div class="featured-label-row">
+          <span class="featured-line"></span>
+          <span class="featured-label">Handpicked</span>
+        </div>
+        <div class="featured-title-row">
+          <h2>Featured Collection</h2>
+          <a class="featured-view" href="#cars">View all</a>
+        </div>
+      </div>
+
+      <div class="featured-grid">
+        <% const featuredCars = cars.slice(0, 4); %>
+        <% if (featuredCars.length === 0) { %>
+          <div class="empty featured-empty">
+            <p style="margin: 0;">No featured vehicles yet</p>
+          </div>
+        <% } %>
+
+        <% featuredCars.forEach(function(car){ %>
+          <article class="featured-card">
+            <div class="featured-tag <%= (car.Availability || '').toLowerCase() %>"><%= car.Availability %></div>
+            <div class="featured-hero"></div>
+            <div class="featured-body">
+              <h3><%= car.Model %></h3>
+              <p class="muted"><%= car.Brand %></p>
+              <div class="featured-price">$<%= parseFloat(car.Price).toFixed(2) %></div>
+            </div>
+            <div class="featured-footer">
+              <span class="meta-item">Status: <%= car.Availability %></span>
+              <% if (currentUser) { %>
+                <a class="btn ghost" href="/">View Details</a>
+              <% } else { %>
+                <a class="btn ghost" href="/auth/login">Sign in</a>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
       </div>
     </section>
 

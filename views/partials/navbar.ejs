@@ -15,9 +15,10 @@
   <div class="user-box">
     <% if (currentUser) { %>
       <span class="user-name"><%= currentUser.Name %></span>
-      <span class="pill role"><%= currentUser.Role %></span>
       <% if (isAdmin) { %>
         <a class="btn primary" href="/admin/cars" style="padding: 10px 16px; font-size: 13px;">Admin</a>
+      <% } else { %>
+        <span class="pill role"><%= currentUser.Role %></span>
       <% } %>
       <form action="/auth/logout" method="post" style="display:inline;">
         <button class="btn ghost" type="submit" style="padding: 10px 16px; font-size: 13px;">Logout</button>

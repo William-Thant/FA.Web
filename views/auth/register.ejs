@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create account | DriveWay</title>
+  <title>Create account | Marketplace</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body class="auth">
@@ -17,7 +17,15 @@
     <form class="stack" action="/auth/register" method="post">
       <label>Name<input required name="name" placeholder="Avery Tan"></label>
       <label>Email<input required name="email" type="email" placeholder="you@example.com"></label>
-      <label>Password<input required name="password" type="password" placeholder="••••••"></label>
+      <label>Password<input required name="password" type="password" placeholder="Enter password"></label>
+      <label>Account Type
+        <select required name="role">
+          <option value="">Select your role</option>
+          <option value="buyer">Buyer</option>
+          <option value="dealer">Dealer</option>
+          <option value="admin">Admin</option>
+        </select>
+      </label>
       <button class="btn primary" type="submit">Create account</button>
     </form>
   </main>

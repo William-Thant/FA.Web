@@ -17,7 +17,7 @@ exports.login = async function(req, res, next) {
     }
 
     res.cookie('user', JSON.stringify(user), { httpOnly: false, sameSite: true });
-    res.redirect('/');
+    res.redirect('/home');
   } catch (err) {
     next(err);
   }
@@ -29,12 +29,17 @@ exports.showRegister = function(req, res) {
 
 exports.register = async function(req, res, next) {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password || !role) {
       return res.status(400).render('auth/register', { title: 'Create account', error: 'All fields are required.' });
     }
     if (password.length < 6) {
       return res.status(400).render('auth/register', { title: 'Create account', error: 'Password must be at least 6 characters.' });
+    }
+
+    const validRoles = ['buyer', 'dealer', 'admin'];
+    if (!validRoles.includes(role)) {
+      return res.status(400).render('auth/register', { title: 'Create account', error: 'Invalid role selected.' });
     }
 
     const existing = await userModel.findByEmail(email.trim().toLowerCase());
@@ -45,11 +50,12 @@ exports.register = async function(req, res, next) {
     const user = await userModel.createUser({
       name: name.trim(),
       email: email.trim().toLowerCase(),
-      password
+      password,
+      role
     });
 
-    res.cookie('user', JSON.stringify(user), { httpOnly: false, sameSite: true });
-    res.redirect('/');
+    res.cookie('user', JSON.stringify(user), { httpOnly: false, sameSite: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.redirect('/home');
   } catch (err) {
     next(err);
   }

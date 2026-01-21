@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browse Cars | DriveWay</title>
+  <title>Browse Cars | Marketplace</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
@@ -13,13 +13,7 @@
       <div>
         <p class="eyebrow">Browse</p>
         <h1>Available cars</h1>
-        <p class="lede">Filter by category or use the search bar to find a model fast.</p>
-      </div>
-      <div class="category-strip">
-        <% categories.forEach(function(cat){ %>
-          <a href="/cars?category=<%= cat %>" class="chip <%= category && category.toLowerCase() === cat.toLowerCase() ? 'chip-active' : '' %>"><%= cat %></a>
-        <% }) %>
-        <a href="/cars" class="chip">Clear</a>
+        <p class="lede">Search to find your perfect car.</p>
       </div>
     </section>
 
@@ -32,18 +26,15 @@
       <% cars.forEach(function(car){ %>
         <article class="card">
           <div class="card-top">
-            <span class="pill"><%= car.category %></span>
-            <span class="status available">Available</span>
+            <span class="status <%= car.Availability %>"><%= car.Availability %></span>
           </div>
-          <h3><%= car.name %></h3>
-          <p class="muted"><%= car.type %> · <%= car.condition %></p>
-          <p class="price">$<%= car.pricePerDay %><span>/day</span></p>
+          <h3><%= car.Model %></h3>
+          <p class="muted"><%= car.Brand %></p>
+          <p class="price">$<%= parseFloat(car.Price).toFixed(2) %></p>
           <% if (currentUser) { %>
-            <form action="/cars/<%= car.id %>/rent" method="post">
-              <button class="btn primary" type="submit">Rent</button>
-            </form>
+            <a class="btn primary" href="/">View Details</a>
           <% } else { %>
-            <a class="btn ghost" href="/auth/login">Sign in to rent</a>
+            <a class="btn ghost" href="/auth/login">Sign in to view</a>
           <% } %>
         </article>
       <% }) %>

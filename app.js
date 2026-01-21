@@ -28,13 +28,18 @@ app.use(function(req, res, next) {
   if (rawUser) {
     try {
       req.user = JSON.parse(rawUser);
+      res.locals.currentUser = req.user;
+      res.locals.isAdmin = req.user && req.user.Role === 'admin';
     } catch (err) {
       req.user = null;
+      res.locals.currentUser = null;
+      res.locals.isAdmin = false;
     }
   } else {
     req.user = null;
+    res.locals.currentUser = null;
+    res.locals.isAdmin = false;
   }
-  res.locals.currentUser = req.user;
   next();
 });
 

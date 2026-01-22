@@ -2,34 +2,36 @@
 
 function buildNavItems() {
   return [
-    { label: 'New', href: '/?category=New' },
-    { label: 'Used', href: '/?category=Used' },
-    { label: 'Electric', href: '/?category=Electric' },
-    { label: 'Hybrid', href: '/?category=Hybrid' },
+    { label: 'Cars', href: '/cars' },
     { label: 'Loan', href: '#loan' },
-    { label: 'Rent', href: '/cars' },
     { label: 'Sell', href: '#sell' },
     { label: 'More', href: '#more' }
   ];
 }
 
+exports.showWelcome = function(req, res) {
+  // If user is already logged in, redirect to home
+  if (req.user) {
+    return res.redirect('/home');
+  }
+  res.render('welcome');
+};
+
 exports.renderHome = async function(req, res, next) {
   try {
-    const category = req.query.category || '';
+    // Redirect to welcome if not logged in
+    if (!req.user) {
+      return res.redirect('/');
+    }
+
     const search = req.query.search || '';
-    const [cars, highlights] = await Promise.all([
-      carModel.getAvailable(category, search),
-      carModel.getHighlights()
-    ]);
+    const cars = await carModel.getAvailable(search);
 
     res.render('index', {
-      title: 'DriveWay Rentals',
-      category,
+      title: 'Car Marketplace',
       search,
       navItems: buildNavItems(),
-      categories: carModel.getCategories(),
-      cars,
-      highlights
+      cars
     });
   } catch (err) {
     next(err);
@@ -38,31 +40,14 @@ exports.renderHome = async function(req, res, next) {
 
 exports.listCars = async function(req, res, next) {
   try {
-    const category = req.query.category || '';
     const search = req.query.search || '';
-    const cars = await carModel.getAvailable(category, search);
+    const cars = await carModel.getAvailable(search);
     res.render('cars', {
       title: 'Browse Cars',
-      category,
       search,
       navItems: buildNavItems(),
-      categories: carModel.getCategories(),
       cars
     });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.rentCar = async function(req, res, next) {
-  try {
-    const carId = parseInt(req.params.id, 10);
-    const renterName = req.user?.name || 'Guest';
-    const rented = await carModel.rentCar(carId, renterName);
-    if (!rented) {
-      return res.status(400).render('error', { message: 'Car unavailable', error: { status: 400 } });
-    }
-    res.redirect('/?rented=' + carId);
   } catch (err) {
     next(err);
   }
@@ -72,9 +57,8 @@ exports.adminCars = async function(req, res, next) {
   try {
     const cars = await carModel.getAll();
     res.render('admin/cars', {
-      title: 'Admin - Fleet',
+      title: 'Admin - Cars',
       cars,
-      categories: carModel.getCategories(),
       navItems: buildNavItems()
     });
   } catch (err) {
@@ -84,14 +68,38 @@ exports.adminCars = async function(req, res, next) {
 
 exports.createCar = async function(req, res, next) {
   try {
-    const { name, category, condition, pricePerDay, type } = req.body;
+    const { Model, Brand, Price, DealerID } = req.body;
     await carModel.addCar({
-      name,
-      category,
-      condition,
-      pricePerDay: Number(pricePerDay) || 0,
-      type
+      Model,
+      Brand,
+      Price: Number(Price) || 0,
+      DealerID: Number(DealerID) || 1
     });
+    res.redirect('/admin/cars');
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateCar = async function(req, res, next) {
+  try {
+    const { Model, Brand, Price } = req.body;
+    const CarID = parseInt(req.params.id, 10);
+    await carModel.updateCar(CarID, {
+      Model,
+      Brand,
+      Price: Number(Price) || 0
+    });
+    res.redirect('/admin/cars');
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteCar = async function(req, res, next) {
+  try {
+    const CarID = parseInt(req.params.id, 10);
+    await carModel.deleteCar(CarID);
     res.redirect('/admin/cars');
   } catch (err) {
     next(err);

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome | Car Marketplace</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .welcome-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(15, 16, 22, 0.9);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #5dd1ff, #32b5e6);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #0f1016;
+    }
+
+    .logo-text h2 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--text);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .logo-text p {
+      margin: 2px 0 0 0;
+      font-size: 11px;
+      color: #5dd1ff;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .welcome-hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 80px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-content h1 {
+      font-size: 64px;
+      font-weight: 700;
+      margin: 0 0 20px 0;
+      line-height: 1.2;
+    }
+
+    .hero-content h1 .highlight {
+      color: #5dd1ff;
+    }
+
+    .hero-content .tagline {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 500px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .btn-explore {
+      padding: 16px 32px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 2px solid #5dd1ff;
+      background: transparent;
+      color: #5dd1ff;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-explore:hover {
+      background: #5dd1ff;
+      color: #0f1016;
+    }
+
+    .btn-rent {
+      padding: 16px 32px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #5dd1ff;
+      color: #0f1016;
+      border: 2px solid #5dd1ff;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-rent:hover {
+      background: #32b5e6;
+      border-color: #32b5e6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 60px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: #5dd1ff;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .hero-image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-image-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #0a1628 0%, #152238 50%, #0d1a2f 100%);
+      border: 1px solid rgba(93, 209, 255, 0.2);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 0 60px rgba(93, 209, 255, 0.1),
+        inset 0 0 60px rgba(93, 209, 255, 0.05);
+    }
+
+    .hero-image-placeholder::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 20%, rgba(93, 209, 255, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(159, 126, 234, 0.1) 0%, transparent 50%);
+      animation: shimmer 20s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(10px, 10px); }
+    }
+
+    .hero-image-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+
+    .car-icon {
+      font-size: 180px;
+      line-height: 1;
+      margin-bottom: 20px;
+      text-shadow: 0 0 40px rgba(93, 209, 255, 0.3);
+      filter: drop-shadow(0 0 20px rgba(93, 209, 255, 0.2));
+    }
+
+    .car-text {
+      color: rgba(93, 209, 255, 0.6);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 1024px) {
+      .welcome-hero {
+        grid-template-columns: 1fr;
+        padding: 60px 40px;
+        gap: 40px;
+      }
+
+      .hero-content h1 {
+        font-size: 48px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .welcome-header {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .welcome-hero {
+        padding: 40px 20px;
+      }
+
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="welcome-header">
+    <div class="logo-section">
+      <div class="logo-icon">🚗</div>
+      <div class="logo-text">
+        <h2>CAR MARKETPLACE</h2>
+        <p>Luxury Redefined</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="welcome-hero">
+    <div class="hero-content">
+      <h1>Premium <span class="highlight">Vehicles</span></h1>
+      <p class="tagline">Discover a curated range of premium vehicles, backed by trusted service and seamless booking.</p>
+      
+      <div class="hero-buttons">
+        <a href="/auth/login" class="btn-explore">Log In</a>
+        <a href="/auth/register" class="btn-rent">Create Account</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Vehicles Available</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Years</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">98%</div>
+          <div class="stat-label">Customer Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

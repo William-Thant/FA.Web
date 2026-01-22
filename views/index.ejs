@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DriveWay | Premium Car Rentals</title>
+  <title>Car Marketplace</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
@@ -11,80 +11,98 @@
   <main class="page">
     <section class="hero">
       <div>
-        <p class="eyebrow">Drive smart � Drive now</p>
-        <h1>Rent your next car with confidence.</h1>
-        <p class="lede">Browse new releases, reliable used rides, and a modern electric lineup. Flexible daily pricing, transparent policies, and admin-grade fleet controls.</p>
+        <p class="eyebrow">🚗 Welcome to Premium Marketplace</p>
+        <h1>Find Your Perfect Vehicle</h1>
+        <p class="lede">Explore our curated collection of premium vehicles with transparent pricing and seamless booking. Industry-leading customer service guaranteed.</p>
         <div class="hero-actions">
-          <a class="btn primary" href="#cars">Browse cars</a>
-          <a class="btn ghost" href="/admin/cars">Admin panel</a>
+          <% if (isAdmin) { %>
+            <a class="btn primary" href="/admin/cars">Manage Inventory</a>
+          <% } %>
         </div>
       </div>
-      <div class="hero-card">
-        <p class="label">Highlighted</p>
-        <div class="highlight-grid">
-          <% highlights.forEach(function(car){ %>
-            <div class="card highlight">
-              <div class="card-top">
-                <span class="pill"><%= car.category %></span>
-                <span class="status available"><%= car.condition %></span>
-              </div>
-              <h3><%= car.name %></h3>
-              <p class="muted"><%= car.type %> � $<%= car.pricePerDay %>/day</p>
+    </section>
+
+    <section class="featured" id="featured">
+      <div class="featured-head">
+        <div class="featured-label-row">
+          <span class="featured-line"></span>
+          <span class="featured-label">Handpicked</span>
+        </div>
+        <div class="featured-title-row">
+          <h2>Featured Collection</h2>
+          <a class="featured-view" href="#cars">View all</a>
+        </div>
+      </div>
+
+      <div class="featured-grid">
+        <% const featuredCars = cars.slice(0, 4); %>
+        <% if (featuredCars.length === 0) { %>
+          <div class="empty featured-empty">
+            <p style="margin: 0;">No featured vehicles yet</p>
+          </div>
+        <% } %>
+
+        <% featuredCars.forEach(function(car){ %>
+          <article class="featured-card">
+            <div class="featured-tag <%= (car.Availability || '').toLowerCase() %>"><%= car.Availability %></div>
+            <div class="featured-hero"></div>
+            <div class="featured-body">
+              <h3><%= car.Model %></h3>
+              <p class="muted"><%= car.Brand %></p>
+              <div class="featured-price">$<%= parseFloat(car.Price).toFixed(2) %></div>
             </div>
-          <% }) %>
-        </div>
+            <div class="featured-footer">
+              <span class="meta-item">Status: <%= car.Availability %></span>
+              <% if (currentUser) { %>
+                <a class="btn ghost" href="/">View Details</a>
+              <% } else { %>
+                <a class="btn ghost" href="/auth/login">Sign in</a>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
       </div>
     </section>
 
-    <section class="category-strip" id="cars">
-      <% navItems.slice(0,4).forEach(function(item){ %>
-        <a href="<%= item.href %>" class="chip <%= category && category.toLowerCase() === item.label.toLowerCase() ? 'chip-active' : '' %>">
-          <%= item.label %>
-        </a>
-      <% }) %>
-    </section>
-
-    <section class="car-grid">
+    <section class="car-grid" id="cars">
       <% if (cars.length === 0) { %>
         <div class="empty">
-          <p>No cars match your filters. Try a different category or clear the search bar.</p>
+          <p style="font-size: 16px; margin: 0;">No vehicles currently available</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px;">Check back soon for our premium selection of vehicles</p>
         </div>
       <% } %>
       <% cars.forEach(function(car){ %>
         <article class="card">
           <div class="card-top">
-            <span class="pill"><%= car.category %></span>
-            <span class="status available">Available</span>
+            <span class="status <%= car.Availability %>"><%= car.Availability %></span>
           </div>
-          <h3><%= car.name %></h3>
-          <p class="muted"><%= car.type %> � <%= car.condition %></p>
-          <p class="price">$<%= car.pricePerDay %><span>/day</span></p>
+          <h3 style="margin: 12px 0 4px 0; font-size: 20px; font-weight: 700;"><%= car.Model %></h3>
+          <p class="muted" style="margin: 0 0 12px 0;"><%= car.Brand %></p>
+          <p class="price" style="color: #5dd1ff;">$<%= parseFloat(car.Price).toFixed(2) %></p>
           <% if (currentUser) { %>
-            <form action="/cars/<%= car.id %>/rent" method="post">
-              <button class="btn primary" type="submit">Rent now</button>
-            </form>
+            <a class="btn primary" href="/">View Details</a>
           <% } else { %>
-            <a class="btn ghost" href="/auth/login">Sign in to rent</a>
+            <a class="btn ghost" href="/auth/login">Sign in to view</a>
           <% } %>
         </article>
       <% }) %>
     </section>
 
-    <section class="info-grid" id="loan">
+    <section class="info-grid" id="services">
       <div class="info-card">
-        <h3>Loan & Ownership</h3>
-        <p>Explore loan pathways for long-term car ownership. Admins can flag vehicles eligible for purchase or longer leases.</p>
-        <a class="text-link" href="#loan">Talk to us</a>
+        <h3>💳 Flexible Financing</h3>
+        <p>Explore competitive loan options tailored to your needs. Get pre-approved in minutes and drive home today with our trusted financial partners.</p>
+        <a class="text-link" href="#financing">Learn more →</a>
       </div>
-      <div class="info-card" id="sell">
-        <h3>Sell or Trade-in</h3>
-        <p>Upgrade your fleet by listing existing cars. Admins can mark units as maintenance, rented, or ready to list.</p>
-        <a class="text-link" href="#sell">List a car</a>
+      <div class="info-card">
+        <h3>🔄 Trade-In Program</h3>
+        <p>Upgrade to your dream vehicle by trading in your current car. Get instant valuation and seamless upgrade process with best-in-class service.</p>
+        <a class="text-link" href="#tradein">Get valued →</a>
       </div>
-      <div class="info-card" id="more">
-        <h3>More services</h3>
-        <p>Pick-up scheduling, insurance pairing, and route optimization help renters stay on time and on budget.</p>
-        <a class="text-link" href="#more">View all</a>
+      <div class="info-card">
+        <h3>🛡️ Complete Protection</h3>
+        <p>Comprehensive insurance coverage, roadside assistance, and maintenance packages. Drive with confidence knowing you're fully protected.</p>
+        <a class="text-link" href="#protection">Explore plans →</a>
       </div>
     </section>
   </main>

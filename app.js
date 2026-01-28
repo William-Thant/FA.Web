@@ -36,6 +36,10 @@ app.use(function(req, res, next) {
     req.user = null;
   }
   res.locals.currentUser = req.user;
+  const role = req.user && req.user.Role;
+  res.locals.isAdmin = role === 'admin';
+  res.locals.isDealer = role === 'dealer';
+  res.locals.isBuyer = role === 'buyer';
   next();
 });
 

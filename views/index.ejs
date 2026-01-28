@@ -17,6 +17,12 @@
         <div class="hero-actions">
           <% if (isAdmin) { %>
             <a class="btn primary" href="/admin/cars">Manage Inventory</a>
+          <% } else if (isDealer) { %>
+            <a class="btn primary" href="/cars">View Your Listings</a>
+            <span class="pill role" style="margin-left: 12px;">Dealer</span>
+          <% } else { %>
+            <a class="btn primary" href="/cars">Browse Cars</a>
+            <span class="pill role" style="margin-left: 12px;">Buyer</span>
           <% } %>
         </div>
       </div>
@@ -53,8 +59,12 @@
             </div>
             <div class="featured-footer">
               <span class="meta-item">Status: <%= car.Availability %></span>
-              <% if (currentUser) { %>
-                <a class="btn ghost" href="/">View Details</a>
+              <% if (isAdmin) { %>
+                <a class="btn ghost" href="/admin/cars">Edit Listing</a>
+              <% } else if (isDealer) { %>
+                <a class="btn ghost" href="/cars">View Listing</a>
+              <% } else if (currentUser) { %>
+                <a class="btn ghost" href="/cars">Book Test Drive</a>
               <% } else { %>
                 <a class="btn ghost" href="/auth/login">Sign in</a>
               <% } %>
@@ -79,8 +89,12 @@
           <h3 style="margin: 12px 0 4px 0; font-size: 20px; font-weight: 700;"><%= car.Model %></h3>
           <p class="muted" style="margin: 0 0 12px 0;"><%= car.Brand %></p>
           <p class="price" style="color: #5dd1ff;">$<%= parseFloat(car.Price).toFixed(2) %></p>
-          <% if (currentUser) { %>
-            <a class="btn primary" href="/">View Details</a>
+          <% if (isAdmin) { %>
+            <a class="btn primary" href="/admin/cars">Manage</a>
+          <% } else if (isDealer) { %>
+            <a class="btn primary" href="/cars">View Listing</a>
+          <% } else if (currentUser) { %>
+            <a class="btn primary" href="/cars">Book Test Drive</a>
           <% } else { %>
             <a class="btn ghost" href="/auth/login">Sign in to view</a>
           <% } %>

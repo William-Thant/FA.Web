@@ -31,8 +31,12 @@
           <h3><%= car.Model %></h3>
           <p class="muted"><%= car.Brand %></p>
           <p class="price">$<%= parseFloat(car.Price).toFixed(2) %></p>
-          <% if (currentUser) { %>
-            <a class="btn primary" href="/">View Details</a>
+          <% if (isAdmin) { %>
+            <a class="btn primary" href="/admin/cars">Manage</a>
+          <% } else if (isDealer) { %>
+            <a class="btn primary" href="/cars">View Listing</a>
+          <% } else if (currentUser) { %>
+            <a class="btn primary" href="/cars">Book Test Drive</a>
           <% } else { %>
             <a class="btn ghost" href="/auth/login">Sign in to view</a>
           <% } %>

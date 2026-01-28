@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Profile | Marketplace</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <%- include('../partials/navbar', { navItems, search }) %>
+  <main class="page">
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Your profile</h1>
+        <p class="lede">Overview of your administrator account.</p>
+      </div>
+    </section>
+
+    <section class="admin-grid">
+      <div class="card">
+        <h3>Account details</h3>
+        <div class="stack">
+          <div><span class="muted">Name</span><br><strong><%= admin.Name || 'Not set' %></strong></div>
+          <div><span class="muted">Email</span><br><strong><%= admin.Email || 'Not set' %></strong></div>
+          <div><span class="muted">Role</span><br><span class="pill role">Admin</span></div>
+          <% if (admin.UserID) { %>
+            <div><span class="muted">User ID</span><br><strong>#<%= admin.UserID %></strong></div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Shortcuts</h3>
+        <p class="muted">Quick access to admin tools.</p>
+        <div class="stack">
+          <a class="btn primary" href="/admin/cars">Manage cars</a>
+          <a class="btn ghost" href="/home">Back to marketplace</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
